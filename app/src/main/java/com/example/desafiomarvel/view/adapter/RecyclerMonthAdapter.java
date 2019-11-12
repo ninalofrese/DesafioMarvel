@@ -1,6 +1,5 @@
 package com.example.desafiomarvel.view.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,10 @@ public class RecyclerMonthAdapter extends RecyclerView.Adapter<RecyclerMonthAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Result result = resultList.get(position);
         holder.onBind(result);
+
+        holder.itemView.setOnClickListener(view -> {
+            listener.onClick(result);
+        });
     }
 
     @Override

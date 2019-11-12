@@ -1,6 +1,7 @@
 package com.example.desafiomarvel.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,11 +24,10 @@ public class HomeActivityViewModel extends AndroidViewModel {
     public static final String PRIVATE_KEY = "0dd0c16fedb8a02985977eafca66b49f5e6a526f";
     public String timestamp = Long.toString(System.currentTimeMillis() / 1000);
     public String hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
-    public String order = "onsaleDate";
-    public String data = "thisMonth";
-    public String format = "comic";
-    public String formatType = "comic";
-    public int count = 20;
+    private String order = "onsaleDate";
+    private String date = "thisMonth";
+    private String format = "comic";
+    private String formatType = "comic";
 
     private MutableLiveData<List<Result>> comicList = new MutableLiveData<>();
     private MutableLiveData<Boolean> loading = new MutableLiveData<>();
@@ -51,9 +51,9 @@ public class HomeActivityViewModel extends AndroidViewModel {
         return this.error;
     }
 
-    public void getThisMonthComics(String dateDescriptor, String format, String formatType, String order, String timestamp, String hash, String apikey, int count) {
+    public void getThisMonthComics(int offset) {
         disposable.add(
-                repository.getComics(dateDescriptor, format, formatType, order, timestamp, hash, apikey, count)
+                repository.getComics(date, format, formatType, order, timestamp, hash, PUBLIC_KEY, offset)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable1 -> {
@@ -62,11 +62,17 @@ public class HomeActivityViewModel extends AndroidViewModel {
                         .doAfterTerminate(() -> {
                             loading.setValue(false);
                         })
-                        .subscribe(data1 -> {
-                            comicList.setValue(data1.getResults());
+                        .subscribe(comicsResponse -> {
+                            comicList.setValue(comicsResponse.getData().getResults());
                         }, throwable -> {
                             error.setValue(throwable.getMessage());
                         })
         );
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.clear();
     }
 }

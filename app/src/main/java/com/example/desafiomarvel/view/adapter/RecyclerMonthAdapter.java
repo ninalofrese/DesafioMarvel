@@ -1,5 +1,6 @@
 package com.example.desafiomarvel.view.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class RecyclerMonthAdapter extends RecyclerView.Adapter<RecyclerMonthAdap
     @Override
     public int getItemCount() {
         return resultList == null ? 0 : resultList.size();
+//        return resultList.size();
     }
 
     public void updateList(List<Result> newList) {
@@ -65,7 +67,8 @@ public class RecyclerMonthAdapter extends RecyclerView.Adapter<RecyclerMonthAdap
 
         public void onBind(Result result) {
             comicTitle.setText(result.getTitle());
-            Picasso.get().load(result.getThumbnail().getPath()).into(comicCover);
+            Picasso picasso = Picasso.get();
+            picasso.load(result.getThumbnail().getPath() + "." + result.getThumbnail().getExtension()).resize(195, 300).into(comicCover);
         }
     }
 }

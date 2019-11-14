@@ -6,15 +6,15 @@ import com.google.gson.annotations.Expose;
 public class Date {
 
     @Expose
-    private String date;
+    private java.util.Date date;
     @Expose
     private String type;
 
-    public String getDate() {
+    public java.util.Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(java.util.Date date) {
         this.date = date;
     }
 

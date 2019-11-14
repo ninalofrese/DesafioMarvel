@@ -1,7 +1,6 @@
 package com.example.desafiomarvel.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,13 +16,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.desafiomarvel.util.DataMarvelUtils.PRIVATE_KEY;
+import static com.example.desafiomarvel.util.DataMarvelUtils.PUBLIC_KEY;
 import static com.example.desafiomarvel.util.Md5CreatorUtils.md5;
 
 public class HomeActivityViewModel extends AndroidViewModel {
-    public static final String PUBLIC_KEY = "6eb7e8896ec5850c52515a8a23ee97f0";
-    public static final String PRIVATE_KEY = "0dd0c16fedb8a02985977eafca66b49f5e6a526f";
-    public String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-    public String hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
+    private String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+    private String hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
     private String order = "onsaleDate";
     private String date = "thisMonth";
     private String format = "comic";
@@ -53,7 +52,7 @@ public class HomeActivityViewModel extends AndroidViewModel {
 
     public void getThisMonthComics(int offset) {
         disposable.add(
-                repository.getComics(date, format, formatType, order, timestamp, hash, PUBLIC_KEY, offset)
+                repository.getComics(date, format, formatType, order, timestamp, hash, PUBLIC_KEY, true, offset)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable1 -> {

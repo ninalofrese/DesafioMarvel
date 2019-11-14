@@ -2,6 +2,7 @@ package com.example.desafiomarvel.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -27,6 +28,8 @@ public class HomeActivity extends AppCompatActivity implements ComicOnClick {
     private RecyclerMonthAdapter adapter;
     private List<Result> monthComics = new ArrayList<>();
 
+    public static final String RESULT_KEY = "result";
+
     public int offset = 0;
 
     @Override
@@ -40,7 +43,11 @@ public class HomeActivity extends AppCompatActivity implements ComicOnClick {
         viewModel.getThisMonthComics(offset);
 
         viewModel.getComics().observe(this, results -> {
-            adapter.updateList(results);
+            if (results != null && !results.isEmpty()) {
+                adapter.updateList(results);
+            } else {
+                adapter.updateList(this.monthComics);
+            }
         });
 
         viewModel.getLoading().observe(this, aBoolean -> {
@@ -68,9 +75,7 @@ public class HomeActivity extends AppCompatActivity implements ComicOnClick {
     @Override
     public void onClick(Result result) {
         Intent intent = new Intent(HomeActivity.this, DetalheActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("result", result);
-        intent.putExtras(bundle);
+        intent.putExtra(RESULT_KEY, result.getId());
         startActivity(intent);
     }
 }

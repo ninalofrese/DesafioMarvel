@@ -3,7 +3,9 @@ package com.example.desafiomarvel.data.remote;
 import com.example.desafiomarvel.model.ComicsResponse;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ComicsAPI {
@@ -16,5 +18,13 @@ public interface ComicsAPI {
                                             @Query("ts") String timestamp,
                                             @Query("hash") String hash,
                                             @Query("apikey") String apiKey,
+                                            @Query("noVariants") Boolean noVariants,
                                             @Query("offset") int offset);
+
+    @GET("comics/{comicId}")
+    Observable<ComicsResponse> getSingleComic(@Path("comicId") Long id,
+                                          @Query("ts") String timestamp,
+                                          @Query("hash") String hash,
+                                          @Query("apikey") String apiKey);
+
 }

@@ -37,6 +37,10 @@ public class RecyclerMonthAdapter extends RecyclerView.Adapter<RecyclerMonthAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Result result = resultList.get(position);
         holder.onBind(result);
+
+        holder.itemView.setOnClickListener(view -> {
+            listener.onClick(result);
+        });
     }
 
     @Override
@@ -68,7 +72,7 @@ public class RecyclerMonthAdapter extends RecyclerView.Adapter<RecyclerMonthAdap
         public void onBind(Result result) {
             comicTitle.setText(result.getTitle());
             Picasso picasso = Picasso.get();
-            picasso.load(result.getThumbnail().getPath() + "." + result.getThumbnail().getExtension()).resize(195, 300).into(comicCover);
+            picasso.load(result.getThumbnail().getPath() + "/detail." + result.getThumbnail().getExtension()).into(comicCover);
         }
     }
 }

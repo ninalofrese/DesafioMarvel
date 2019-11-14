@@ -2,6 +2,8 @@ package com.example.desafiomarvel.data.remote;
 
 import com.facebook.stetho.BuildConfig;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
     private static final String BASE_URL = "https://gateway.marvel.com:443/v1/public/";
+
     private static Retrofit retrofit;
 
     private static Retrofit getRetrofit() {
@@ -34,11 +37,15 @@ public class RetrofitService {
                 httpClient.addNetworkInterceptor(new StethoInterceptor());
             }
 
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                    .create();
+
             // inicializamos o retrofit com as configurações
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(httpClient.build())
                     .build();
         }

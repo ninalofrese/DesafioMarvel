@@ -14,7 +14,6 @@ Este projeto foi desenvolvido com o objetivo de mostrar as habilidades adquirida
 ## Features
 - Lista todas as HQs do mês atual, usando de pagination para mostrar todos os registros do período;
 - Detalhes de cada HQ, com imagem alternativa e link para mais informações no site da Marvel;
-- 
 
 
 ## Autora

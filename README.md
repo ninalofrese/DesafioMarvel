@@ -10,6 +10,7 @@ Este projeto foi desenvolvido com o objetivo de mostrar as habilidades adquirida
 - RXJava
 - MVVM
 - GSON
+- Picasso
 
 ## Features
 - Lista todas as HQs do mês atual, usando de pagination para mostrar todos os registros do período;
